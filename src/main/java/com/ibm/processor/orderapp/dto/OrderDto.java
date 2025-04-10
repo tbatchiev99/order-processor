@@ -1,12 +1,22 @@
-package com.ibm.processor.orderapp.model;
+package com.ibm.processor.orderapp.dto;
 
-public class Order {
+public class OrderDto {
 
     private String orderName;
     private String product;
-    private int quantity;
+    private Integer quantity;
 
-    public int getQuantity() {
+    public OrderDto() {
+
+    }
+
+    public OrderDto(String orderName, String product, Integer quantity) {
+        this.orderName = orderName;
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -26,7 +36,8 @@ public class Order {
         this.product = product;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
 }
