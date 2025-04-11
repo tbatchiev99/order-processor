@@ -40,4 +40,12 @@ public class CreateOrderDto {
         this.quantity = quantity;
     }
 
+    @Override
+    public String toString() {
+        return "CreateOrderDto{" +
+                "name='" + name + '\'' +
+                ", productId=" + productId +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

@@ -6,7 +6,7 @@ public class OrderDto {
 
     private Integer id;
     private String name;
-    private Integer productName;
+    private String productName;
     private Integer quantity;
     private String orderNr;
     private Instant orderedOn;
@@ -28,11 +28,11 @@ public class OrderDto {
         this.name = name;
     }
 
-    public Integer getProductName() {
+    public String getProductName() {
         return productName;
     }
 
-    public void setProductName(Integer productName) {
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 

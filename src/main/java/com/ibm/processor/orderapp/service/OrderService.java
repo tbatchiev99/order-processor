@@ -12,5 +12,5 @@ public interface OrderService {
     void sendOrder(final CreateOrderDto order);
 
     OrderDto saveOrder(final CreateOrderDto orderDto);
-    List<CreateOrderDto> getAllOrders();
+    List<OrderDto> getAllOrders();
 }

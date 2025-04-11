@@ -2,6 +2,8 @@ package com.ibm.processor.orderapp.service.impl;
 
 import com.ibm.processor.orderapp.dto.CreateOrderDto;
 import com.ibm.processor.orderapp.dto.OrderDto;
+import com.ibm.processor.orderapp.entity.Order;
+import com.ibm.processor.orderapp.repository.OrderRepository;
 import com.ibm.processor.orderapp.service.OrderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,11 @@ public class OrderServiceImpl implements OrderService {
     @Value(value = "${kafka.order.topic.name}")
     private String topicName;
 
-    private KafkaProducer kafkaProducer;
+    private final OrderRepository orderRepository;
+    private final KafkaProducer kafkaProducer;
 
-    public OrderServiceImpl(final KafkaProducer kafkaProducer) {
+    public OrderServiceImpl(final OrderRepository orderRepository, final KafkaProducer kafkaProducer) {
+        this.orderRepository = orderRepository;
         this.kafkaProducer = kafkaProducer;
     }
 
@@ -34,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAllOrders() {
-        return List.of();
+        return orderRepository.findAll().stream().map(this::toDto).toList();
     }
 
     private String getSaltString() {
@@ -46,5 +50,19 @@ public class OrderServiceImpl implements OrderService {
         }
         return salt.toString();
 
+    }
+
+    private OrderDto toDto(final Order order) {
+
+        final OrderDto orderDto = new OrderDto();
+
+        orderDto.setId(order.getId());
+        orderDto.setOrderNr(order.getOrderNr());
+        orderDto.setOrderedOn(order.getOrderedOn());
+        orderDto.setName(order.getName());
+        orderDto.setProductName(order.getProduct().getName());
+        orderDto.setStatus(order.getStatus().getName());
+
+        return orderDto;
     }
 }

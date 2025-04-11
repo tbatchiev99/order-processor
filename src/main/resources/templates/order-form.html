@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:ns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Order</title>
 </head>
 <body>
 <h1>Create New Order</h1>
 
-<form ns:action="@{/orders}" ns:object="${order}" method="post">
-
+<form th:action="@{/orders}" th:object="${order}" method="post">
     <label>Order Name:</label>
-    <input type="text" ns:field="*{orderName}" required /><br/><br/>
+    <input type="text" th:field="*{name}" required /><br/><br/>
 
-    <label>Product name:</label>
-    <input type="text" ns:field="*{productName}" required /><br/><br/>
+
+    <label>Product:</label>
+    <select class="form-control" id="productDropDownList">
+        <option value="0">Select Product</option>
+        <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+    </select>
 
     <label>Quantity:</label>
-    <input type="number" ns:field="*{quantity}" required min="1" /><br/><br/>
+    <input type="number" th:field="*{quantity}" required min="1" /><br/><br/>
 
     <button type="submit">Submit Order</button>
 </form>
@@ -23,16 +26,16 @@
 <hr/>
 
 <h2>Order List</h2>
-<table>
+<table border="1">
     <tr>
         <th>Order Name</th>
         <th>Product</th>
         <th>Quantity</th>
     </tr>
-    <tr ns:each="ord : ${orders}">
-        <td ns:text="${ord.orderName}"></td>
-        <td ns:text="${ord.product}"></td>
-        <td ns:text="${ord.quantity}"></td>
+    <tr th:each="ord : ${orders}">
+        <td th:text="${ord.orderName}"></td>
+        <td th:text="${ord.product}"></td>
+        <td th:text="${ord.quantity}"></td>
     </tr>
 </table>
 </body>

@@ -1,13 +1,10 @@
 package com.ibm.processor.orderapp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
-@Entity
+@Entity(name = "\"order\"")
 public class Order {
 
     @Id
@@ -16,10 +13,16 @@ public class Order {
 
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
+
     private Integer quantity;
     private String orderNr;
     private Instant orderedOn;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
     private Status status;
 
     public Integer getId() {
