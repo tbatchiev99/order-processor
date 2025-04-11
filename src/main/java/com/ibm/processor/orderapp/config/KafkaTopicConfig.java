@@ -1,6 +1,6 @@
 package com.ibm.processor.orderapp.config;
 
-import com.ibm.processor.orderapp.dto.OrderDto;
+import com.ibm.processor.orderapp.dto.CreateOrderDto;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -43,7 +43,7 @@ public class KafkaTopicConfig {
      *
      */
     @Bean
-    public ProducerFactory<String, OrderDto> producerFactory() {
+    public ProducerFactory<String, CreateOrderDto> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(
@@ -60,7 +60,7 @@ public class KafkaTopicConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, OrderDto> kafkaTemplate() {
+    public KafkaTemplate<String, CreateOrderDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

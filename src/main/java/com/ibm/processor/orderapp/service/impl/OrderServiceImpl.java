@@ -1,10 +1,12 @@
 package com.ibm.processor.orderapp.service.impl;
 
+import com.ibm.processor.orderapp.dto.CreateOrderDto;
 import com.ibm.processor.orderapp.dto.OrderDto;
 import com.ibm.processor.orderapp.service.OrderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -21,8 +23,18 @@ public class OrderServiceImpl implements OrderService {
         this.kafkaProducer = kafkaProducer;
     }
 
-    public void sendOrder(final OrderDto order) {
+    public void sendOrder(final CreateOrderDto order) {
         kafkaProducer.sendMessage(topicName, getSaltString(), order);
+    }
+
+    @Override
+    public OrderDto saveOrder(final CreateOrderDto createOrderDto) {
+        return null;
+    }
+
+    @Override
+    public List<OrderDto> getAllOrders() {
+        return List.of();
     }
 
     private String getSaltString() {

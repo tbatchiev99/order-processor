@@ -1,16 +1,26 @@
-package com.ibm.processor.orderapp.dto;
+package com.ibm.processor.orderapp.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.Instant;
 
-public class OrderDto {
+@Entity
+public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
-    private Integer productName;
+
+    private Product product;
     private Integer quantity;
     private String orderNr;
     private Instant orderedOn;
-    private String status;
+    private Status status;
 
     public Integer getId() {
         return id;
@@ -28,12 +38,12 @@ public class OrderDto {
         this.name = name;
     }
 
-    public Integer getProductName() {
-        return productName;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductName(Integer productName) {
-        this.productName = productName;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {
@@ -60,11 +70,11 @@ public class OrderDto {
         this.orderedOn = orderedOn;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

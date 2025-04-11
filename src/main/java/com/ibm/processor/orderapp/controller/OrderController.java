@@ -1,6 +1,6 @@
 package com.ibm.processor.orderapp.controller;
 
-import com.ibm.processor.orderapp.dto.OrderDto;
+import com.ibm.processor.orderapp.dto.CreateOrderDto;
 import com.ibm.processor.orderapp.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private List<OrderDto> orders = new ArrayList<>();
+    private List<CreateOrderDto> orders = new ArrayList<>();
 
     public OrderController(final OrderService orderService) {
         this.orderService = orderService;
@@ -23,13 +23,13 @@ public class OrderController {
 
     @GetMapping("/orders")
     public String showOrderForm(Model model) {
-        model.addAttribute("order", new OrderDto());
+        model.addAttribute("order", new CreateOrderDto());
         model.addAttribute("orders", orders);
         return "order-form";
     }
 
     @PostMapping("/orders")
-    public String saveOrder(@ModelAttribute OrderDto order) {
+    public String saveOrder(@ModelAttribute CreateOrderDto order) {
         orderService.sendOrder(order);
         return "redirect:/orders";
     }
