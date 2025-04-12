@@ -23,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
     private static final String SUCCESSFULLY_PROCESSED = "Successfully processed";
     private static final String NOT_PROCESSED = "Not processed";
 
-    @Value(value = "${kafka.order.topic.name}")
+    @Value(value = "${spring.kafka.order.topic.name}")
     private String topicName;
 
     private final OrderRepository orderRepository;
@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
 
     public void sendOrder(final CreateOrderDto order) {
         kafkaProducer.sendMessage(topicName, order);
-        log.info("Order creation Service sent the order request with name {} to the processor.", order.getName());
+        log.info("Order creation Service sent the order request with name {} to the broker.", order.getName());
     }
 
     @Override

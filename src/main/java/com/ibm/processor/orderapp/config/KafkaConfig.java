@@ -17,14 +17,26 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.apache.kafka.clients.producer.ProducerConfig.*;
+
 @Configuration
-public class KafkaTopicConfig {
+public class KafkaConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
-    @Value(value = "${kafka.order.topic.name}")
+    @Value(value = "${spring.kafka.order.topic.name}")
     private String topicName;
+
+    @Value(value = "${spring.kafka.producer.retries}")
+    private String retries;
+
+    @Value(value = "${spring.kafka.producer.retry.backoff.ms}")
+    private String retryBackoff;
+
+    @Value(value = "${spring.kafka.producer.delivery.timeout.ms}")
+    private String deliveryTimeout;
+
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -33,6 +45,9 @@ public class KafkaTopicConfig {
         return new KafkaAdmin(configs);
     }
 
+    /**
+     * Sets the order-topic to 3 partitions with replication factor 3 for each of them.
+     */
     @Bean
     public NewTopic orderTopic() {
         return new NewTopic(topicName, 9, (short) 3);
@@ -51,7 +66,9 @@ public class KafkaTopicConfig {
         configProps.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JsonSerializer.class);
-
+        configProps.put(RETRIES_CONFIG, retries);
+        configProps.put(RETRY_BACKOFF_MS_CONFIG, retryBackoff);
+        configProps.put(DELIVERY_TIMEOUT_MS_CONFIG, deliveryTimeout);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 

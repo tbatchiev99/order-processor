@@ -16,6 +16,9 @@ import java.util.List;
 
 import static com.ibm.processor.orderapp.util.Constants.*;
 
+/**
+ * Controller class that serves to populate the static web page with functionality.
+ */
 @Controller
 public class OrderController {
 
@@ -27,6 +30,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    /**
+     * Populates the product dropdown, the order form and the order list.
+     * @param model
+     * @return redirect page
+     */
     @GetMapping("/order-form")
     public String showOrderForm(Model model) {
 
@@ -43,6 +51,12 @@ public class OrderController {
         return "order-form";
     }
 
+    /**
+     * Validates and executes saving logic whenever the form is posted.
+     * @param order
+     * @param model
+     * @return redirect page
+     */
     @PostMapping("/order-submit")
     public String saveOrder(@ModelAttribute CreateOrderDto order, Model model) {
 
