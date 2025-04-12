@@ -10,7 +10,7 @@ public class KafkaProducer implements MessageProducer {
 
     private final KafkaTemplate<String, CreateOrderDto> kafkaTemplate;
 
-    public KafkaProducer(KafkaTemplate<String, CreateOrderDto> kafkaTemplate) {
+    public KafkaProducer(final KafkaTemplate<String, CreateOrderDto> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -18,8 +18,8 @@ public class KafkaProducer implements MessageProducer {
     TODO: Investigate key
      */
 
-    public void sendMessage(String topic, String key, CreateOrderDto order) {
-        kafkaTemplate.send(topic, key, order);
+    public void sendMessage(String topic, CreateOrderDto order) {
+        kafkaTemplate.send(topic, order);
     }
 
 

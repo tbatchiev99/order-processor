@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MessageProducer {
 
-    void sendMessage(String topic, String key, CreateOrderDto order);
+    void sendMessage(String topic, CreateOrderDto order);
 
 }

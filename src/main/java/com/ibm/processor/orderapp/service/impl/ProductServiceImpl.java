@@ -1,6 +1,5 @@
 package com.ibm.processor.orderapp.service.impl;
 
-import com.ibm.processor.orderapp.dto.ProductDto;
 import com.ibm.processor.orderapp.entity.Product;
 import com.ibm.processor.orderapp.repository.ProductRepository;
 import com.ibm.processor.orderapp.service.ProductService;
@@ -19,20 +18,12 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<ProductDto> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(this::toDto)
-                .toList();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
-    private ProductDto toDto(final Product product) {
-
-        final ProductDto productDto = new ProductDto();
-
-        productDto.setId(product.getId());
-        productDto.setName(product.getName());
-
-        return productDto;
+    @Override
+    public Product findById(Integer id) {
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No product with id %d found.", id)));
     }
 }

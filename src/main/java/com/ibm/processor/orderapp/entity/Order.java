@@ -18,7 +18,10 @@ public class Order {
     private Product product;
 
     private Integer quantity;
-    private String orderNr;
+
+    @Column(name = "order_nr", nullable = false, unique = true)
+    private Long orderNr;
+
     private Instant orderedOn;
 
     @ManyToOne
@@ -57,11 +60,11 @@ public class Order {
         this.quantity = quantity;
     }
 
-    public String getOrderNr() {
+    public Long getOrderNr() {
         return orderNr;
     }
 
-    public void setOrderNr(String orderNr) {
+    public void setOrderNr(Long orderNr) {
         this.orderNr = orderNr;
     }
 

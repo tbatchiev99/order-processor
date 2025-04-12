@@ -1,7 +1,7 @@
 package com.ibm.processor.orderapp.service;
 
 import com.ibm.processor.orderapp.dto.CreateOrderDto;
-import com.ibm.processor.orderapp.dto.OrderDto;
+import com.ibm.processor.orderapp.entity.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +11,6 @@ public interface OrderService {
 
     void sendOrder(final CreateOrderDto order);
 
-    OrderDto saveOrder(final CreateOrderDto orderDto);
-    List<OrderDto> getAllOrders();
+    Order saveOrder(final CreateOrderDto orderDto);
+    List<Order> getAllOrders();
 }

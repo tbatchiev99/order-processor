@@ -35,7 +35,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic orderTopic() {
-        return new NewTopic(topicName, 1, (short) 1);
+        return new NewTopic(topicName, 9, (short) 3);
     }
 
     /**

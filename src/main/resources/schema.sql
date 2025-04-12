@@ -8,6 +8,8 @@ CREATE TABLE status (
     name VARCHAR(50)
 );
 
+CREATE SEQUENCE order_nr_seq START WITH 1000;
+
 CREATE TABLE "order" (
     id IDENTITY,
     quantity INT NOT NULL,
@@ -15,7 +17,7 @@ CREATE TABLE "order" (
     product_id INT NOT NULL,
     status_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    order_nr VARCHAR(20) NOT NULL,
+    order_nr BIGINT NOT NULL DEFAULT nextval('order_nr_seq'),
     CONSTRAINT fk_order_product FOREIGN KEY (product_id) REFERENCES product(id),
     CONSTRAINT fk_order_status FOREIGN KEY (status_id) REFERENCES status(id)
 );
@@ -24,4 +26,10 @@ INSERT INTO product(name) VALUES
 ('Sporting bag NIKE'),
 ('Leather belt'),
 ('Flashlight TORCHLIGHT');
+
+INSERT INTO status(name) VALUES
+('Successfully processed'),
+('Not processed');
+
+ ALTER TABLE "order" ADD CONSTRAINT order_nr_uq UNIQUE(order_nr);
 

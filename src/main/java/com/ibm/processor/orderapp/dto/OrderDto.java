@@ -8,7 +8,7 @@ public class OrderDto {
     private String name;
     private String productName;
     private Integer quantity;
-    private String orderNr;
+    private Long orderNr;
     private Instant orderedOn;
     private String status;
 
@@ -44,11 +44,11 @@ public class OrderDto {
         this.quantity = quantity;
     }
 
-    public String getOrderNr() {
+    public Long getOrderNr() {
         return orderNr;
     }
 
-    public void setOrderNr(String orderNr) {
+    public void setOrderNr(Long orderNr) {
         this.orderNr = orderNr;
     }
 

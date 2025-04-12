@@ -1,68 +1,71 @@
 package com.ibm.processor.orderapp.service.impl;
 
 import com.ibm.processor.orderapp.dto.CreateOrderDto;
-import com.ibm.processor.orderapp.dto.OrderDto;
 import com.ibm.processor.orderapp.entity.Order;
 import com.ibm.processor.orderapp.repository.OrderRepository;
 import com.ibm.processor.orderapp.service.OrderService;
+import com.ibm.processor.orderapp.service.ProductService;
+import com.ibm.processor.orderapp.service.StatusService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private static final String SALT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    private static final String SUCCESSFULLY_PROCESSED = "Successfully processed";
 
     @Value(value = "${kafka.order.topic.name}")
     private String topicName;
 
     private final OrderRepository orderRepository;
     private final KafkaProducer kafkaProducer;
+    private final StatusService statusService;
+    private final ProductService productService;
 
-    public OrderServiceImpl(final OrderRepository orderRepository, final KafkaProducer kafkaProducer) {
+    public OrderServiceImpl(final OrderRepository orderRepository, final KafkaProducer kafkaProducer, final StatusService statusService, final ProductService productService) {
         this.orderRepository = orderRepository;
         this.kafkaProducer = kafkaProducer;
+        this.statusService = statusService;
+        this.productService = productService;
     }
 
     public void sendOrder(final CreateOrderDto order) {
-        kafkaProducer.sendMessage(topicName, getSaltString(), order);
+        kafkaProducer.sendMessage(topicName, order);
     }
 
     @Override
-    public OrderDto saveOrder(final CreateOrderDto createOrderDto) {
-        return null;
-    }
+    public Order saveOrder(final CreateOrderDto createOrderDto) {
 
-    @Override
-    public List<OrderDto> getAllOrders() {
-        return orderRepository.findAll().stream().map(this::toDto).toList();
-    }
+        Order order;
 
-    private String getSaltString() {
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 18) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALT_CHARS.length());
-            salt.append(SALT_CHARS.charAt(index));
+        try {
+            order = toEntity(createOrderDto);
+        } catch (final RuntimeException exception) {
+
         }
-        return salt.toString();
 
+        return orderRepository.save(toEntity(createOrderDto));
     }
 
-    private OrderDto toDto(final Order order) {
+    @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 
-        final OrderDto orderDto = new OrderDto();
+    private Order toEntity(final CreateOrderDto orderDto) {
 
-        orderDto.setId(order.getId());
-        orderDto.setOrderNr(order.getOrderNr());
-        orderDto.setOrderedOn(order.getOrderedOn());
-        orderDto.setName(order.getName());
-        orderDto.setProductName(order.getProduct().getName());
-        orderDto.setStatus(order.getStatus().getName());
+        final Order order = new Order();
 
-        return orderDto;
+        order.setName(orderDto.getName());
+        order.setOrderedOn(Instant.now());
+        order.setQuantity(orderDto.getQuantity());
+        order.setOrderNr(orderRepository.getNextOrderNr());
+        order.setProduct(productService.findById(orderDto.getProductId()));
+        order.setStatus(statusService.findByName(SUCCESSFULLY_PROCESSED));
+
+        return order;
     }
 }

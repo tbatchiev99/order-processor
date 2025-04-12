@@ -2,6 +2,77 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        hr {
+            margin: 40px 0;
+        }
+    </style>
 </head>
 <body>
 <h1>Create New Order</h1>
@@ -12,7 +83,7 @@
 
 
     <label>Product:</label>
-    <select class="form-control" id="productDropDownList">
+    <select class="form-control" id="productDropDownList" th:field="*{productId}">
         <option value="0">Select Product</option>
         <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
     </select>
@@ -21,22 +92,40 @@
     <input type="number" th:field="*{quantity}" required min="1" /><br/><br/>
 
     <button type="submit">Submit Order</button>
+
+
 </form>
+
+<div th:if="${errorExists}" style="color: red; margin-bottom: 15px;">
+    <p th:text="${errorMessage}"></p>
+</div>
 
 <hr/>
 
 <h2>Order List</h2>
-<table border="1">
+<table>
     <tr>
+        <th>Order Nr</th>
         <th>Order Name</th>
-        <th>Product</th>
+        <th>Product Name</th>
         <th>Quantity</th>
+        <th>Ordered on</th>
+        <th>Status</th>
     </tr>
     <tr th:each="ord : ${orders}">
-        <td th:text="${ord.orderName}"></td>
-        <td th:text="${ord.product}"></td>
+        <td th:text="${ord.orderNr}"></td>
+        <td th:text="${ord.name}"></td>
+        <td th:text="${ord.productName}"></td>
         <td th:text="${ord.quantity}"></td>
+        <td th:text="${ord.orderedOn}"></td>
+        <td th:text="${ord.status}"></td>
     </tr>
 </table>
 </body>
 </html>
+
+<script language="javascript">
+    setTimeout(function(){
+       window.location.reload(1);
+    }, 30000);
+</script>
