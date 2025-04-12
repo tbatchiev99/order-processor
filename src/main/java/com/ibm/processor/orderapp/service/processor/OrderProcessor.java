@@ -1,6 +1,7 @@
 package com.ibm.processor.orderapp.service.processor;
 
 import com.ibm.processor.orderapp.dto.CreateOrderDto;
+import com.ibm.processor.orderapp.entity.Order;
 import com.ibm.processor.orderapp.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,9 @@ public class OrderProcessor {
     }
 
     /**
-     * Todo: thread safety maybe
+     * Simulates real order processing by giving a 3 second delay and after that storing the result to the database.
+     * Starts on a new thread by using {@link Async}.
+     * Saves an order as 'Not processed' if error exists.
      * @param orderDto
      */
     @Async
@@ -29,12 +32,13 @@ public class OrderProcessor {
         log.info("Processor {} received order -> {}", Thread.currentThread().getName(), orderDto);
 
         try {
-            Thread.sleep(30000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
-        orderService.saveOrder(orderDto);
+        Order order = orderService.saveOrder(orderDto);
 
+        log.info("Processor {} processed Order with nr {} and status {}", Thread.currentThread().getName(), order.getOrderNr(), order.getStatus());
     }
 }

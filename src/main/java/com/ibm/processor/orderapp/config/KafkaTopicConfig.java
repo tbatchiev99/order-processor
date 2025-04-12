@@ -38,10 +38,6 @@ public class KafkaTopicConfig {
         return new NewTopic(topicName, 9, (short) 3);
     }
 
-    /**
-     * TODO: Add retry mechanism. Check other configs, partitions, replication
-     *
-     */
     @Bean
     public ProducerFactory<String, CreateOrderDto> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();

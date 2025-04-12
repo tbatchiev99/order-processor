@@ -3,16 +3,18 @@ package com.ibm.processor.orderapp.controller;
 import com.ibm.processor.orderapp.dto.CreateOrderDto;
 import com.ibm.processor.orderapp.dto.OrderDto;
 import com.ibm.processor.orderapp.dto.ProductDto;
-import com.ibm.processor.orderapp.entity.Order;
 import com.ibm.processor.orderapp.entity.Product;
 import com.ibm.processor.orderapp.service.OrderService;
 import com.ibm.processor.orderapp.service.ProductService;
+import com.ibm.processor.orderapp.util.OrderConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
+
+import static com.ibm.processor.orderapp.util.Constants.*;
 
 @Controller
 public class OrderController {
@@ -25,11 +27,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/order-form")
     public String showOrderForm(Model model) {
 
         final List<ProductDto> productDtos = productService.getAllProducts().stream().map(this::toDto).toList();
-        final List<OrderDto> orderDtos = orderService.getAllOrders().stream().map(this::toDto).toList();
+        final List<OrderDto> orderDtos = orderService.getAllOrders()
+                .stream()
+                .map(OrderConverter::toDto)
+        .toList();
 
         model.addAttribute("order", new CreateOrderDto());
         model.addAttribute("orders", orderDtos);
@@ -38,7 +43,7 @@ public class OrderController {
         return "order-form";
     }
 
-    @PostMapping("/orders")
+    @PostMapping("/order-submit")
     public String saveOrder(@ModelAttribute CreateOrderDto order, Model model) {
 
         boolean errorExists = false;
@@ -46,22 +51,17 @@ public class OrderController {
 
         if (StringUtils.isEmpty(order.getName())) {
             errorExists = true;
-            errorMessage = "Name must be provided!";
+            errorMessage = ORDER_NAME_NULL_ERROR_MESSAGE;
         }
 
         if (order.getName().length() > 100) {
             errorExists = true;
-            errorMessage = "Name must not exceed 100 characters!";
+            errorMessage = ORDER_NAME_LENGTH_ERROR_MESSAGE;
         }
 
         if (order.getProductId() == null) {
             errorExists = true;
-            errorMessage = "Product must be provided!";
-        }
-
-        if (order.getQuantity() < 0 || order.getQuantity() > 100) {
-            errorExists = true;
-            errorMessage = "You should enter a valid quantity!";
+            errorMessage = ORDER_PRODUCT_NULL_ERROR_MESSAGE;
         }
 
         if (!errorExists) {
@@ -88,20 +88,4 @@ public class OrderController {
 
         return productDto;
     }
-
-
-    private OrderDto toDto(final Order order) {
-
-        final OrderDto orderDto = new OrderDto();
-
-        orderDto.setId(order.getId());
-        orderDto.setOrderNr(order.getOrderNr());
-        orderDto.setOrderedOn(order.getOrderedOn());
-        orderDto.setName(order.getName());
-        orderDto.setProductName(order.getProduct().getName());
-        orderDto.setStatus(order.getStatus().getName());
-
-        return orderDto;
-    }
-
 }

@@ -1,6 +1,7 @@
 package com.ibm.processor.orderapp.service.impl;
 
 import com.ibm.processor.orderapp.entity.Product;
+import com.ibm.processor.orderapp.exception.NotFoundException;
 import com.ibm.processor.orderapp.repository.ProductRepository;
 import com.ibm.processor.orderapp.service.ProductService;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
+
     @Override
     public Product findById(Integer id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No product with id %d found.", id)));
+        return productRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("No product with id %d found.", id)));
     }
 }
