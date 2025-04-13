@@ -8,21 +8,15 @@ A simple order processing system built with **Spring Boot 3.4**, **Java 21**, **
 
 - **Java 21**
 - **Spring Boot 3.4**
-- **Thymeleaf** (template engine for the frontend)
-- **Apache Kafka** (message broker for asynchronous order handling)
-- **Springdoc OpenAPI** for Swagger support
-- **Docker** for containerization
+- **Thymeleaf** 
+- **H2 Database** 
+- **Apache Kafka** 
+- **Springdoc OpenAPI** 
+- **Docker** 
   
 ---
 
 ## Getting Started
-
-### Prerequisites
-
-- Java 21
-- Docker & Docker Compose
-- Kafka (optional if using Docker setup)
-- Maven or Gradle
 
 ### Run Locally (without Docker)
 
@@ -31,3 +25,22 @@ A simple order processing system built with **Spring Boot 3.4**, **Java 21**, **
 ./gradlew bootRun
 # or
 mvn spring-boot:run
+```
+
+### Running the app with Docker
+
+```bash
+
+./gradlew clean build
+
+docker build -t order-system .
+
+docker-compose up
+
+```
+
+## Accessing the system
+
+Orders frontend UI: http://localhost:8080/orders
+Swagger: http://localhost:8080/swagger-ui.html
+Kafka-UI: http://localhost:8090
