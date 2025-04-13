@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
+import org.springframework.kafka.retrytopic.DltStrategy;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,8 @@ public class OrderProcessor {
             backoff = @Backoff(value = 2000L),
             attempts = "10",
             autoCreateTopics = "false",
-            include = {NotFoundException.class, BadRequestException.class})
+            include = {NotFoundException.class, BadRequestException.class},
+            dltStrategy = DltStrategy.NO_DLT)
     public void flightEventConsumer(final CreateOrderDto orderDto) {
 
         log.info("Processor {} received order -> {}", Thread.currentThread().getName(), orderDto);

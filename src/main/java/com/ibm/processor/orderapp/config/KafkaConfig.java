@@ -8,10 +8,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaAdmin;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
@@ -37,7 +34,6 @@ public class KafkaConfig {
     @Value(value = "${spring.kafka.producer.delivery.timeout.ms}")
     private String deliveryTimeout;
 
-
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
@@ -45,12 +41,9 @@ public class KafkaConfig {
         return new KafkaAdmin(configs);
     }
 
-    /**
-     * Sets the order-topic to 3 partitions with replication factor 3 for each of them.
-     */
     @Bean
     public NewTopic orderTopic() {
-        return new NewTopic(topicName, 9, (short) 3);
+        return new NewTopic(topicName, 1, (short) 1);
     }
 
     @Bean
