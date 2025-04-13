@@ -26,6 +26,7 @@ This setup runs a local multi-broker (3 brokers) Kafka cluster with a order-syst
 - Producer message retries: 20 , delay between retries: 1s, timeout time: 30s
 - Consumer message retries: 10 , delay between retries: 2s
 - Message dto object - CreateOrderDto in dto package
+- Producer idempotence with all acknowledgements option enabled
     
 ## Getting Started
 
