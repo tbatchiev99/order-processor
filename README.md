@@ -1,10 +1,10 @@
-# Simple Order System
+# Simple order system
 
 A simple order processing system built with **Spring Boot 3.4**, **Java 21**, **Thymeleaf**, and **Apache Kafka**. The application allows users to submit orders via a web interface and simulates order processing asynchronously using Kafka and a custom processor (in package service.processor). 
 
 ---
 
-## Tech Stack
+## Tech stack
 
 - **Java 21**
 - **Spring Boot 3.4**
@@ -16,7 +16,7 @@ A simple order processing system built with **Spring Boot 3.4**, **Java 21**, **
   
 ---
 
-## Docker Compose Setup – Kafka + Order Processing System
+## Docker compose setup 
 
 This setup runs a local multi-broker (3 brokers) Kafka cluster with a order-system service and also a Kafka UI for monitoring.
 
@@ -30,7 +30,7 @@ This setup runs a local multi-broker (3 brokers) Kafka cluster with a order-syst
     
 ## Getting Started
 
-### Run Locally (without Docker)
+### Run locally (without Docker)
 
 Prerequisite env variables:
 
