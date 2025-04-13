@@ -15,7 +15,7 @@ A simple order processing system built with **Spring Boot 3.4**, **Java 21**, **
   
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
