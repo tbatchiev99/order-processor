@@ -18,11 +18,11 @@ A simple order processing system built with **Spring Boot 3.4**, **Java 21**, **
 
 ## Docker compose setup 
 
-This setup runs a local multi-broker (3 brokers) Kafka cluster with a order-system service and also a Kafka UI for monitoring.
+This setup runs a local Kafka broker with a order-system service and also a Kafka UI for monitoring.
 
 ## Kafka configuration
 
-- Topic name: order-topic (9 partitions, replication factor: 3)
+- Topic name: order-topic
 - Producer message retries: 20 , delay between retries: 1s, timeout time: 30s
 - Consumer message retries: 10 , delay between retries: 2s
 - Message dto object - CreateOrderDto in dto package
