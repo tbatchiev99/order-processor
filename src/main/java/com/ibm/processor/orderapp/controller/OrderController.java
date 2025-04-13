@@ -35,7 +35,7 @@ public class OrderController {
      * @param model
      * @return redirect page
      */
-    @GetMapping("/order-form")
+    @GetMapping("/orders")
     public String showOrderForm(Model model) {
 
         final List<ProductDto> productDtos = productService.getAllProducts().stream().map(this::toDto).toList();
@@ -57,7 +57,7 @@ public class OrderController {
      * @param model
      * @return redirect page
      */
-    @PostMapping("/order-submit")
+    @PostMapping("/orders")
     public String saveOrder(@ModelAttribute CreateOrderDto order, Model model) {
 
         boolean errorExists = false;
