@@ -62,8 +62,9 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderedOn(Instant.now());
         order.setQuantity(orderDto.getQuantity());
         order.setOrderNr(orderRepository.getNextOrderNr());
+        order.setProduct(productService.findById(orderDto.getProductId()));
 
-        validateOrder(order, orderDto);
+        validateOrder(order);
 
         return order;
     }
@@ -71,18 +72,10 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Validates if the order has a valid product and quantity. Sets the status to 'Not processed' if not a valid order.
      * @param order
-     * @param orderDto
      */
-    public void validateOrder(final Order order, final CreateOrderDto orderDto) {
+    public void validateOrder(final Order order) {
 
         boolean errorExists = false;
-
-        try {
-            order.setProduct(productService.findById(orderDto.getProductId()));
-        } catch (NotFoundException e) {
-            log.info("Order processing failed for Order nr {}! Product with given id {} not found!", order.getOrderNr(), orderDto.getProductId());
-            errorExists = true;
-        }
 
         if (order.getQuantity() > 100) {
             log.info("Order processing failed for Order nr {}! Quantity limit exceeded!", order.getOrderNr());
